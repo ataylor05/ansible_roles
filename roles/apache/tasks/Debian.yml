@@ -1,9 +1,60 @@
 ---
 - name: Install Apache, PHP, and SSL
-  yum:
+  apt:
     name: "{{ packages }}"
+    force_apt_get: yes
   vars:
     packages:
-    - httpd
-    - mod_ssl
+    - apache2
     - php
+
+- name: Install vhost config file
+  template:
+    src: debian.vhost.conf.j2
+    dest: /etc/apache2/sites-available/vhost.conf
+    owner: root
+    group: root
+    mode: '0664'
+
+- name: Copy SSL certificate
+  copy:
+    src: example.com.crt
+    dest: /etc/ssl/{{ ssl_cert_name }}
+    owner: root
+    group: root
+    mode: '0660'
+
+- name: Copy SSL key
+  copy:
+    src: example.com.key
+    dest: /etc/ssl/{{ ssl_key_name }}
+    owner: root
+    group: root
+    mode: '0660'
+
+- name: Copy CA Chain certificate
+  copy:
+    src: ca-certificates.crt
+    dest: /etc/ssl/{{ ssl_chain_name }}
+    owner: root
+    group: root
+    mode: '0660'
+
+- name: Enable vhost
+  command: a2ensite vhost.conf
+
+- name: Start and enable Apache
+  systemd:
+    state: started
+    name: apache2
+    enabled: yes
+
+- name: Open port 80 on UFW
+  ufw:
+    rule: allow
+    port: '80'
+
+- name: Open port 80 on UFW
+  ufw:
+    rule: allow
+    port: '443'

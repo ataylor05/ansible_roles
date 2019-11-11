@@ -6,19 +6,23 @@
   apt:
     name: "*"
     state: latest
+    force_apt_get: yes
 
 - name: Update all packages to the latest version
   apt:
     upgrade: dist
+    force_apt_get: yes
 
 - name: Install SELinux packages
   apt: 
-    name: policycoreutils-python
+    name: policycoreutils-python-utils
     state: latest
+    force_apt_get: yes
 
 - name: Install basic software
   apt:
     name: "{{ packages }}"
+    force_apt_get: yes
   vars:
     packages:
     - mlocate
