@@ -1,0 +1,10 @@
+---
+- name: Configures a system for a role
+  hosts: default
+  become: yes
+  connection: ssh
+  gather_facts: yes
+  roles:
+    - common
+    - apache
+

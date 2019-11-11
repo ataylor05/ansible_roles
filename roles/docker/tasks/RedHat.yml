@@ -1,0 +1,70 @@
+---
+- name: Install pre-requisite software
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - device-mapper-persistent-data
+    - lvm2
+
+- name: Download get-pip.py
+  get_url:
+    url: https://bootstrap.pypa.io/get-pip.py
+    dest: /tmp/get-pip.py
+    mode: '0774'
+
+- name: Install Python pip
+  shell: |
+    python get-pip.py
+  args:
+    chdir: /tmp
+
+- name: Install pip package for Docker
+  pip:
+    name: docker-py
+
+- name: Start and enable firewalld
+  systemd:
+    name: firewalld
+    state: started
+    enabled: yes
+
+- name: Open firewall port for container
+  firewalld:
+    port: "{{ container_port_number }}/tcp"
+    permanent: yes
+    state: enabled
+
+- name: Restart firewalld
+  systemd:
+    name: firewalld
+    state: restarted
+    enabled: yes
+
+- name: Add Docker repository
+  shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+- name: Install Docker
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+
+- name: Start and enable Docker service
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Add the user ansible to the group docker
+  user:
+    name: "{{ ansible_username }}"
+    groups: docker
+    append: yes
+
+# - name: Pull the ld-relay image from Docker Hub
+#   docker_image:
+#     name: launchdarkly/ld-relay

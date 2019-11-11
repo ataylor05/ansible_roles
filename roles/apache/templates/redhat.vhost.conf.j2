@@ -1,0 +1,23 @@
+<VirtualHost {{ vhost_listen_ip }}:80>
+    ServerAdmin {{ responsible_party }}
+    ServerName {{ website_name }}
+    ServerAlias {{ website_alias }}
+    DocumentRoot {{ http_document_root }}
+    ErrorLog /var/log/httpd/{{ http_error_logs_name }}
+    CustomLog /var/log/httpd/{{ http_access_logs_name }} combined
+</VirtualHost>
+
+<VirtualHost {{ vhost_listen_ip }}:443>
+    SSLEngine On
+    SSLCertificateFile /etc/ssl/{{ ssl_cert_name }}
+    SSLCertificateKeyFile /etc/ssl/{{ ssl_key_name }}
+    SSLCACertificateFile /etc/ssl/{{ ssl_chain_name }}
+    SSLProtocol {{ ssl_protocols }}
+    SSLCipherSuite  {{ ssl_allowed_ciphers }}
+    ServerAdmin {{ responsible_party }}
+    ServerName {{ website_name }}
+    ServerAlias {{ website_alias }}
+    DocumentRoot {{ http_document_root }}
+    ErrorLog /var/log/httpd/{{ http_error_logs_name }}
+    CustomLog /var/log/httpd/{{ http_access_logs_name }} combined
+</VirtualHost>

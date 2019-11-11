@@ -1,0 +1,3 @@
+---
+host_name: hostname.domainname
+jq_dl_url: https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64

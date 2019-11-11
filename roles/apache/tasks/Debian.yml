@@ -1,0 +1,9 @@
+---
+- name: Install Apache, PHP, and SSL
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - httpd
+    - mod_ssl
+    - php

@@ -1,0 +1,8 @@
+---
+- name: Include plays for a RedHat OS family
+  include_tasks: RedHat.yml
+  when: ansible_os_family == "RedHat" and ansible_distribution_major_version == '7'
+
+- name: Include plays for a Debian OS family
+  include_tasks: Debian.yml
+  when: ansible_os_family == "Debian"

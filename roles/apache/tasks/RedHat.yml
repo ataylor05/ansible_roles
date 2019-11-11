@@ -1,0 +1,65 @@
+---
+- name: Install Apache, PHP, and SSL
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - httpd
+    - mod_ssl
+    - php
+
+- name: Install vhost config file
+  template:
+    src: redhat.vhost.conf.j2
+    dest: /etc/httpd/conf.d/vhost.conf
+    owner: root
+    group: root
+    mode: '0664'
+
+- name: Copy SSL certificate
+  copy:
+    src: example.com.crt
+    dest: /etc/ssl/{{ ssl_cert_name }}
+    owner: root
+    group: root
+    mode: '0660'
+
+- name: Copy SSL key
+  copy:
+    src: example.com.key
+    dest: /etc/ssl/{{ ssl_key_name }}
+    owner: root
+    group: root
+    mode: '0660'
+
+- name: Copy CA Chain certificate
+  copy:
+    src: ca-certificates.crt
+    dest: /etc/ssl/{{ ssl_chain_name }}
+    owner: root
+    group: root
+    mode: '0660'
+
+- name: Start and enable Apache
+  systemd:
+    state: started
+    name: httpd
+    enabled: yes
+
+- name: Open port 80
+  firewalld:
+    service: http
+    permanent: yes
+    state: enabled
+
+- name: Open port 443
+  firewalld:
+    service: https
+    permanent: yes
+    state: enabled
+
+- name: Restart Firewalld
+  systemd:
+    state: restarted
+    name: firewalld
+    enabled: yes
