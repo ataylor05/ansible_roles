@@ -1,0 +1,14 @@
+[global]
+        workgroup = {{ workgroup }}
+        netbios name = {{ netbios_name }}
+        security = user
+        passdb backend = tdbsam
+        map to guest = bad user
+
+
+[share]
+        path = {{ share_path }}
+        browsable = {{ browsable }}
+        writable = {{ writable }}
+        guest ok = {{ guest_ok }}
+        valid users = {{ samba_user }}

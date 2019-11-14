@@ -1,0 +1,78 @@
+---
+- name: Install Samba
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - samba
+    - samba-client
+    - samba-common
+
+- name: Create a Samba share directory
+  file:
+    path: "{{ share_path }}"
+    state: directory
+    owner: "{{ samba_user }}"
+    group: wheel
+    mode: '0664'
+
+- name: Configure SELinux to allow Samba directory
+  sefcontext:
+    target: "{{ share_path }}(/.*)?"
+    setype: samba_share_t
+    state: present
+
+- name: Ensure group Samba Users Group exists
+  group:
+    name: "{{ samba_group }}"
+    state: present
+
+- name: Create group for Samba user
+  group:
+    name: "{{ samba_user }}"
+    state: present
+
+- name: Create a Samba user
+  user:
+    name: "{{ samba_user }}"
+    shell: /sbin/nologin
+    groups: "{{ samba_group }}"
+    append: yes
+
+- name: Create Samba configuration file
+  template:
+    src: smb.conf.j2
+    dest: /etc/samba/smb.conf
+    owner: root
+    group: root
+    mode: '0664'
+  notify:
+    - restart smb
+    - restart nmb
+
+- name: Start and Enable Samba
+  systemd:
+    state: started
+    name: smb.service
+    enabled: yes
+
+- name: Start and Enable Netbios
+  systemd:
+    state: started
+    name: nmb.service
+    enabled: yes
+
+- name: Open firewall ports for Samba
+  firewalld:
+    service: samba
+    permanent: yes
+    state: enabled
+
+- name: Restart Firewalld
+  systemd:
+    state: restarted
+    name: firewalld
+
+- name: Create Samba user if it does not exist
+  shell: getent passwd {{ samba_user }} || sshpass -p '{{ samba_password }}' smbpasswd -a "{{ samba_user }}"
+    

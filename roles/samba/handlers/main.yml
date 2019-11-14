@@ -1,0 +1,10 @@
+---
+- name: restart nmb
+  service:
+    name: nmb.service
+    state: restarted
+
+- name: restart smb
+  service:
+    name: smb.service
+    state: restarted

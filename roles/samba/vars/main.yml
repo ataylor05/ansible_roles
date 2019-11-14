@@ -1,0 +1,10 @@
+---
+samba_user: samba
+samba_password: password
+samba_group: samba_users
+workgroup: workgroup
+netbios_name: samba
+share_path: /share
+browsable: yes
+writable: yes
+guest_ok: yes
