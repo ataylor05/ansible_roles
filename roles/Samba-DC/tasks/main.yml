@@ -1,0 +1,87 @@
+---
+- name: Install extra repos
+  dnf:
+    name:
+      - epel-release
+      - dnf-plugins-core
+    state: latest
+
+- name: Enable Power Tools repo
+  shell: dnf config-manager --set-enabled PowerTools
+  args:
+    warn: false
+
+- name: Install Samba dependencies
+  dnf:
+    name:
+      - docbook-style-xsl
+      - gcc
+      - gdb
+      - gnutls-devel
+      - gpgme-devel
+      - jansson-devel
+      - keyutils-libs-devel
+      - krb5-workstation
+      - libacl-devel
+      - libaio-devel
+      - libarchive-devel
+      - libattr-devel
+      - libblkid-devel
+      - libtasn1
+      - libtasn1-tools
+      - libxml2-devel
+      - libxslt
+      - lmdb-devel
+      - openldap-devel
+      - pam-devel
+      - perl
+      - perl-ExtUtils-MakeMaker
+      - perl-Parse-Yapp
+      - popt-devel
+      - python3-cryptography
+      - python3-dns
+      - python3-gpg
+      - python36-devel
+      - readline-devel
+      - rpcgen
+      - systemd-devel
+      - tar
+      - zlib-devel
+    state: latest
+
+- name: Download Samba release
+  unarchive:
+    src: https://download.samba.org/pub/samba/stable/samba-{{ samba_version }}.tar.gz
+    dest: /tmp
+    remote_src: yes
+    mode: '0660'
+
+- name: Build Samba
+  shell: |
+    chmod -R 777 /tmp/samba-{{ samba_version }}
+    cd /tmp/samba-{{ samba_version }}
+    ./configure
+    make
+    make install
+    export PATH=/usr/local/samba/bin/:/usr/local/samba/sbin/:$PATH
+    echo 'export PATH=/usr/local/samba/bin/:/usr/local/samba/sbin/:$PATH' >> /etc/profile
+  args:
+    warn: false
+
+- name: Enable Samba through firewall
+  firewalld:
+    service: samba
+    permanent: yes
+    state: enabled
+
+- name: Build AD
+  shell: |
+    samba-tool domain provision \
+      --use-rfc2307 \
+      --option="interfaces= lo ens160" \
+      --option="bind interfaces only=yes" \
+      --domain=ANET \
+      --realm=ANET.local \
+      --server-role=dc \
+      --dns-backend=BIND9_DLZ \
+      --adminpass=Passw@ord123!

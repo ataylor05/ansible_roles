@@ -1,8 +1,32 @@
 ---
-- name: Include plays for a RedHat OS family
-  include_tasks: RedHat.yml
-  when: ansible_os_family == "RedHat" and ansible_distribution_major_version == '7'
+- name: Patch OS
+  dnf:
+    name: "*"
+    state: latest
 
-- name: Include plays for a Debian OS family
-  include_tasks: Debian.yml
-  when: ansible_os_family == "Debian"
+- name: Install packages
+  dnf:
+    name:
+      - git
+      - mlocate
+      - vim
+      - wget
+      - curl
+      - zip
+      - unzip
+
+- name: Set hostname
+  hostname:
+    name: "{{ fqdn_hostname }}"
+
+- name: Configure /etc/hosts
+  shell: |
+    echo "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4" > /etc/hosts
+    echo "::1         localhost localhost.localdomain localhost6 localhost6.localdomain6" >> /etc/hosts
+    echo "$(hostname -I)   {{ fqdn_hostname }}" >> /etc/hosts
+    systemctl reload NetworkManager
+
+- name: Configure SELinux
+  selinux:
+    policy: targeted
+    state: "{{ selinux_state }}"

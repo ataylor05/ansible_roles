@@ -1,0 +1,49 @@
+options {
+        listen-on port 53 { 127.0.0.1; {{ ansible_facts['default_ipv4']['address'] }}; };
+        listen-on-v6 port 53 { ::1; };
+        directory       "/var/named";
+        dump-file       "/var/named/data/cache_dump.db";
+        statistics-file "/var/named/data/named_stats.txt";
+        memstatistics-file "/var/named/data/named_mem_stats.txt";
+        secroots-file   "/var/named/data/named.secroots";
+        recursing-file  "/var/named/data/named.recursing";
+        allow-query     { localhost;{{ ansible_facts['default_ipv4']['network'] }}/24; };
+        recursion yes;
+        dnssec-enable {{ dns_sec }};
+        dnssec-validation {{ dns_sec }};
+        managed-keys-directory "/var/named/dynamic";
+        pid-file "/run/named/named.pid";
+        session-keyfile "/run/named/session.key";
+        include "/etc/crypto-policies/back-ends/bind.config";
+        forwarders {
+            8.8.8.8;
+            8.8.4.4;
+        };
+};
+
+logging {
+        channel default_debug {
+                file "data/named.run";
+                severity dynamic;
+        };
+};
+
+zone "." IN {
+        type hint;
+        file "named.ca";
+};
+
+include "/etc/named.rfc1912.zones";
+include "/etc/named.root.key";
+
+zone "{{ forward_zone_name  }}" IN {
+           type master;
+           file "{{ forward_zone_name  }}.db";
+           allow-update { localhost;{{ ansible_facts['default_ipv4']['network'] }}/24; };
+};
+
+zone "{{ reverse_zone_name  }}.in-addr.arpa" IN {
+             type master;
+             file "{{ reverse_zone_name  }}.db";
+             allow-update { localhost;{{ ansible_facts['default_ipv4']['network'] }}/24; };
+};

@@ -1,0 +1,44 @@
+---
+- name: Disable Network Manager from setting DNS
+  shell: |
+    echo '[main]' > /etc/NetworkManager/conf.d/90-dns-none.conf
+    echo 'dns=none' >> /etc/NetworkManager/conf.d/90-dns-none.conf
+    systemctl reload NetworkManager
+
+- name: Install BIND
+  dnf:
+    name:
+      - bind
+      - bind-utils
+
+- name: Update named.conf
+  template:
+    src: templates/named.conf.j2
+    dest: /etc/named.conf
+    owner: root
+    group: named
+    mode: '0664'
+
+- name: Create forward zone
+  template:
+    src: templates/forward-zone.j2
+    dest: /var/named/{{ forward_zone_name  }}.db
+    owner: root
+    group: named
+    mode: '0664'
+
+- name: Create reverse zone
+  template:
+    src: templates/reverse-zone.j2
+    dest: /var/named/{{ reverse_zone_name  }}.db
+    owner: root
+    group: named
+    mode: '0664'
+
+- name: Add firewall policy for DNS
+  firewalld:
+    service: dns
+    permanent: yes
+    state: enabled
+  notify:
+    - Restart BIND
