@@ -68,11 +68,96 @@
   args:
     warn: false
 
-- name: Enable Samba through firewall
+- name: Enable Kerberos TCP through firewall
   firewalld:
-    service: samba
+    port: 88/tcp
     permanent: yes
     state: enabled
+
+- name: Enable Kerberos UDP through firewall
+  firewalld:
+    port: 88/udp
+    permanent: yes
+    state: enabled
+
+- name: Enable DCE/RPC Locator Service TCP through firewall
+  firewalld:
+    port: 135/tcp
+    permanent: yes
+    state: enabled
+
+- name: Enable NetBIOS Name Service UDP through firewall
+  firewalld:
+    port: 137/udp
+    permanent: yes
+    state: enabled
+
+- name: Enable NetBIOS Datagram UDP through firewall
+  firewalld:
+    port: 138/udp
+    permanent: yes
+    state: enabled
+
+- name: Enable NetBIOS Session TCP through firewall
+  firewalld:
+    port: 139/tcp
+    permanent: yes
+    state: enabled
+
+- name: Enable LDAP TCP through firewall
+  firewalld:
+    port: 389/tcp
+    permanent: yes
+    state: enabled
+
+- name: Enable LDAP UDP through firewall
+  firewalld:
+    port: 389/udp
+    permanent: yes
+    state: enabled
+
+- name: Enable SMB TCP through firewall
+  firewalld:
+    port: 445/tcp
+    permanent: yes
+    state: enabled
+
+- name: Enable Kerberos kpasswd TCP through firewall
+  firewalld:
+    port: 464/tcp
+    permanent: yes
+    state: enabled
+
+- name: Enable Kerberos kpasswd UDP through firewall
+  firewalld:
+    port: 464/udp
+    permanent: yes
+    state: enabled
+
+- name: Enable LDAPS TCP through firewall
+  firewalld:
+    port: 636/tcp
+    permanent: yes
+    state: enabled
+
+- name: Enable Global Catalog TCP through firewall
+  firewalld:
+    port: 3268/tcp
+    permanent: yes
+    state: enabled
+
+- name: Enable Global Catalog SSL TCP through firewall
+  firewalld:
+    port: 3269/tcp
+    permanent: yes
+    state: enabled
+
+- name: Enable Dynamic RPC Ports TCP through firewall
+  firewalld:
+    port: 49152-65535/tcp
+    permanent: yes
+    state: enabled
+
 
 # - name: Build AD
 #   shell: |
