@@ -6,7 +6,7 @@
 
 - name: Enable chrony service
   systemd:
-    name: chrony
+    name: chronyd
     enabled: yes
 
 - name: Update chrony.conf
