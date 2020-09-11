@@ -175,3 +175,17 @@
     src: /usr/local/samba/private/krb5.conf
     dest: /etc/krb5.conf
     remote_src: yes
+
+- name: Copy Samba DC systemd file
+  copy:
+    src: /files/samba-ad-dc.service
+    dest: /etc/systemd/system/samba-ad-dc.service
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Force systemd to reread configs
+  systemd:
+    daemon_reload: yes
+  notify:
+    - Restart Samba DC

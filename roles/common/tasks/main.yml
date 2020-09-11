@@ -12,6 +12,7 @@
       - vim
       - wget
       - curl
+      - setroubleshoot
       - zip
       - unzip
 

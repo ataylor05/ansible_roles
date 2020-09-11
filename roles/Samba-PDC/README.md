@@ -12,11 +12,19 @@ Here is an example of the main.yml file to deploy this playbook.<br>
     - role: common
       vars:
         fqdn_hostname: ns1.anet.local
-        selinux_state: enforcing
+        selinux_state: disabled
+        
     - role: BIND
       vars:
-        fqdn_hostname: ns1.anet.local
-    - Samba-DC
+        forward_zone_name: anet.local
+        reverse_zone_name: "1.168.192"
+        dns_sec: no
+
+    - role: Samba-PDC
+      vars:
+        domain_name: ANET
+        realm: ANET.local
+        administrator_password: Passw@ord123!
 </pre>
 <br><br>
 **ansible-playbook main.yml**

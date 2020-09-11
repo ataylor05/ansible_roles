@@ -5,8 +5,8 @@
   roles:
     - role: common
       vars:
-        fqdn_hostname: ns1.anet.local
-        selinux_state: enforcing
+        fqdn_hostname: ad1.anet.local
+        selinux_state: disabled
 
     - role: NTP
       vars:
@@ -14,10 +14,12 @@
 
     - role: BIND
       vars:
-        fqdn_hostname: ns1.anet.local
+        forward_zone_name: anet.local
+        reverse_zone_name: "1.168.192"
         dns_sec: no
 
     - role: Samba-PDC
       vars:
-        fqdn_hostname: ns1.anet.local
-        dns_sec: no
+        domain_name: ANET
+        realm: ANET.local
+        administrator_password: Passw@ord123!

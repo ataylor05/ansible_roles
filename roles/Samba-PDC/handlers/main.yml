@@ -1,6 +1,6 @@
 ---
-- name: Restart BIND
+- name: Restart Samba DC
   systemd:
-    name: named
+    name: samba-ad-dc
     enabled: yes
     state: restarted
