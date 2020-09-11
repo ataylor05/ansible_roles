@@ -63,8 +63,8 @@
     ./configure
     make
     make install
-    export PATH=/usr/local/samba/bin/:/usr/local/samba/sbin/:$PATH
     echo 'export PATH=/usr/local/samba/bin/:/usr/local/samba/sbin/:$PATH' >> /etc/profile
+    source /etc/profile
   args:
     warn: false
 
@@ -158,15 +158,20 @@
     permanent: yes
     state: enabled
 
+- name: Build AD
+  shell: |
+    samba-tool domain provision \
+      --use-rfc2307 \
+      --option="interfaces= lo ens160" \
+      --option="bind interfaces only=yes" \
+      --domain=ANET \
+      --realm=ANET.local \
+      --server-role=dc \
+      --dns-backend=BIND9_DLZ \
+      --adminpass=Passw@ord123!
 
-# - name: Build AD
-#   shell: |
-#     samba-tool domain provision \
-#       --use-rfc2307 \
-#       --option="interfaces= lo ens160" \
-#       --option="bind interfaces only=yes" \
-#       --domain=ANET \
-#       --realm=ANET.local \
-#       --server-role=dc \
-#       --dns-backend=BIND9_DLZ \
-#       --adminpass=Passw@ord123!
+- name: Replace Kerberos configuration
+  copy:
+    src: /usr/local/samba/private/krb5.conf
+    dest: /etc/krb5.conf
+    remote_src: yes
