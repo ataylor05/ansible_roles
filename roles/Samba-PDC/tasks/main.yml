@@ -64,7 +64,7 @@
     make
     make install
     echo 'export PATH=/usr/local/samba/bin/:/usr/local/samba/sbin/:$PATH' >> /etc/profile
-    source /etc/profile
+    echo 'Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/samba/bin/:/usr/local/samba/sbin' >> /etc/sudoers
   args:
     warn: false
 
