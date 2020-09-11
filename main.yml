@@ -11,8 +11,13 @@
     - role: NTP
       vars:
         ntp_network_access: 192.168.4.0/24
-        
+
     - role: BIND
+      vars:
+        fqdn_hostname: ns1.anet.local
+        dns_sec: no
+
+    - role: Samba-PDC
       vars:
         fqdn_hostname: ns1.anet.local
         dns_sec: no
