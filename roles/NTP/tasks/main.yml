@@ -1,0 +1,25 @@
+---
+- name: Install chrony
+  dnf:
+    name: chrony
+    state: latest
+
+- name: Enable chrony service
+  systemd:
+    name: chrony
+    enabled: yes
+
+- name: Update chrony.conf
+  template:
+    src: templates/chrony.conf.j2
+    dest: /etc/chrony.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart chronyd
+
+- name: Allow NTP ports through firewall
+  firewalld:
+    service: ntp
+    permanent: yes
+    state: enabled
