@@ -178,7 +178,7 @@
 
 - name: Copy Samba DC systemd file
   copy:
-    src: /files/samba-ad-dc.service
+    src: samba-ad-dc.service
     dest: /etc/systemd/system/samba-ad-dc.service
     owner: root
     group: root
