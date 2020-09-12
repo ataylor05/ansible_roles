@@ -24,7 +24,7 @@
   shell: |
     echo "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4" > /etc/hosts
     echo "::1         localhost localhost.localdomain localhost6 localhost6.localdomain6" >> /etc/hosts
-    echo "$(hostname -I)   {{ fqdn_hostname }}" >> /etc/hosts
+    echo "$(hostname -I)   {{ fqdn_hostname }}  {{ hostname }}" >> /etc/hosts
     systemctl reload NetworkManager
 
 - name: Configure SELinux

@@ -11,7 +11,8 @@ Here is an example of the main.yml file to deploy this playbook.<br>
   roles:
     - role: common
       vars:
-        fqdn_hostname: ns1.anet.local
+        hostname: ad1
+        fqdn_hostname: ad1.anet.internal
         selinux_state: disabled
         
     - role: BIND

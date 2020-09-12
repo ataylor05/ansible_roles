@@ -1,4 +1,17 @@
 ---
+- name: Disabling DNS processing in the NetworkManager configuration
+  shell: |
+    echo '[main]' > /etc/NetworkManager/conf.d/90-dns-none.conf
+    echo 'dns=none' >> /etc/NetworkManager/conf.d/90-dns-none.conf
+    systemctl reload NetworkManager
+  args:
+    warn: false
+
+- name: Remove krb5.conf
+  file:
+    path: /etc/krb5.conf
+    state: absent
+
 - name: Install extra repos
   dnf:
     name:
@@ -162,13 +175,11 @@
   shell: |
     /usr/local/samba/bin/samba-tool domain provision \
       --use-rfc2307 \
-      --option="interfaces= lo ens160" \
-      --option="bind interfaces only=yes" \
-      --domain=ANET \
-      --realm=ANET.local \
+      --domain={{ domain_name }} \
+      --realm={{ realm }} \
       --server-role=dc \
-      --dns-backend=BIND9_DLZ \
-      --adminpass=Passw@ord123!
+      --dns-backend={{ dns_backend }} \
+      --adminpass={{ administrator_password }}
 
 - name: Replace Kerberos configuration
   copy:
@@ -186,6 +197,11 @@
 
 - name: Force systemd to reread configs
   systemd:
+    name: samba-ad-dc
     daemon_reload: yes
-  notify:
-    - Restart Samba DC
+    state: restarted
+
+- name: Update /etc/resolv.conf
+  shell: |
+    echo "search {{ realm }}" > /etc/resolv.conf
+    echo "nameserver {{ ansible_facts['default_ipv4']['address'] }}" > /etc/resolv.conf

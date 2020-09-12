@@ -1,4 +1,5 @@
 samba_version: "4.12.6"
 domain_name: ANET
-realm: ANET.local
+realm: ANET.internal
 administrator_password: Passw@ord123!
+dns_backend: SAMBA_INTERNAL

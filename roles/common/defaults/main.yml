@@ -1,2 +1,3 @@
+hostname: host
 fqdn_hostname: host.anet.local
 selinux_state: enforcing
