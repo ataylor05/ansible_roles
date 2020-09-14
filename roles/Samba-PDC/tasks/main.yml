@@ -176,37 +176,37 @@
     permanent: yes
     state: enabled
 
-- name: Build AD
-  shell: |
-    /usr/local/samba/bin/samba-tool domain provision \
-      --use-rfc2307 \
-      --domain={{ domain_name }} \
-      --realm={{ realm }} \
-      --server-role=dc \
-      --dns-backend={{ dns_backend }} \
-      --adminpass={{ administrator_password }}
+# - name: Build AD
+#   shell: |
+#     /usr/local/samba/bin/samba-tool domain provision \
+#       --use-rfc2307 \
+#       --domain={{ domain_name }} \
+#       --realm={{ realm }} \
+#       --server-role=dc \
+#       --dns-backend={{ dns_backend }} \
+#       --adminpass={{ administrator_password }}
 
-- name: Replace Kerberos configuration
-  copy:
-    src: /usr/local/samba/private/krb5.conf
-    dest: /etc/krb5.conf
-    remote_src: yes
+# - name: Replace Kerberos configuration
+#   copy:
+#     src: /usr/local/samba/private/krb5.conf
+#     dest: /etc/krb5.conf
+#     remote_src: yes
 
-- name: Copy Samba DC systemd file
-  copy:
-    src: samba-ad-dc.service
-    dest: /etc/systemd/system/samba-ad-dc.service
-    owner: root
-    group: root
-    mode: '0644'
+# - name: Copy Samba DC systemd file
+#   copy:
+#     src: samba-ad-dc.service
+#     dest: /etc/systemd/system/samba-ad-dc.service
+#     owner: root
+#     group: root
+#     mode: '0644'
 
-- name: Force systemd to reread configs
-  systemd:
-    name: samba-ad-dc
-    daemon_reload: yes
-    state: restarted
+# - name: Force systemd to reread configs
+#   systemd:
+#     name: samba-ad-dc
+#     daemon_reload: yes
+#     state: restarted
 
-- name: Update /etc/resolv.conf
-  shell: |
-    echo "search {{ realm }}" > /etc/resolv.conf
-    echo "nameserver {{ ansible_facts['default_ipv4']['address'] }}" > /etc/resolv.conf
+# - name: Update /etc/resolv.conf
+#   shell: |
+#     echo "search {{ realm }}" > /etc/resolv.conf
+#     echo "nameserver {{ ansible_facts['default_ipv4']['address'] }}" > /etc/resolv.conf
