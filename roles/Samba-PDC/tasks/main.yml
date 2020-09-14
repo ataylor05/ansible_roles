@@ -100,7 +100,8 @@
   systemd:
     name: samba-ad-dc
     daemon_reload: yes
-    state: enabled
+    state: stopped
+    enabled: no
 
 - name: Update /etc/resolv.conf
   shell: |
