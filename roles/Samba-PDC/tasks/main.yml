@@ -85,7 +85,8 @@
   systemd:
     name: firewalld
     daemon_reload: yes
-    state: disabled
+    state: stopped
+    enabled: no
 
 - name: Copy Samba DC systemd file
   copy:
