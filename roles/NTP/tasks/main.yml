@@ -23,3 +23,8 @@
     service: ntp
     permanent: yes
     state: enabled
+
+- name: Restart chrony
+  systemd:
+    name: chrony
+    state: restarted

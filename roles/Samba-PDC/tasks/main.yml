@@ -81,127 +81,127 @@
   args:
     warn: false
 
-- name: Enable Kerberos TCP through firewall
-  firewalld:
-    port: 88/tcp
-    permanent: yes
-    state: enabled
+# - name: Enable Kerberos TCP through firewall
+#   firewalld:
+#     port: 88/tcp
+#     permanent: yes
+#     state: enabled
 
-- name: Enable Kerberos UDP through firewall
-  firewalld:
-    port: 88/udp
-    permanent: yes
-    state: enabled
+# - name: Enable Kerberos UDP through firewall
+#   firewalld:
+#     port: 88/udp
+#     permanent: yes
+#     state: enabled
 
-- name: Enable DCE/RPC Locator Service TCP through firewall
-  firewalld:
-    port: 135/tcp
-    permanent: yes
-    state: enabled
+# - name: Enable DCE/RPC Locator Service TCP through firewall
+#   firewalld:
+#     port: 135/tcp
+#     permanent: yes
+#     state: enabled
 
-- name: Enable NetBIOS Name Service UDP through firewall
-  firewalld:
-    port: 137/udp
-    permanent: yes
-    state: enabled
+# - name: Enable NetBIOS Name Service UDP through firewall
+#   firewalld:
+#     port: 137/udp
+#     permanent: yes
+#     state: enabled
 
-- name: Enable NetBIOS Datagram UDP through firewall
-  firewalld:
-    port: 138/udp
-    permanent: yes
-    state: enabled
+# - name: Enable NetBIOS Datagram UDP through firewall
+#   firewalld:
+#     port: 138/udp
+#     permanent: yes
+#     state: enabled
 
-- name: Enable NetBIOS Session TCP through firewall
-  firewalld:
-    port: 139/tcp
-    permanent: yes
-    state: enabled
+# - name: Enable NetBIOS Session TCP through firewall
+#   firewalld:
+#     port: 139/tcp
+#     permanent: yes
+#     state: enabled
 
-- name: Enable LDAP TCP through firewall
-  firewalld:
-    port: 389/tcp
-    permanent: yes
-    state: enabled
+# - name: Enable LDAP TCP through firewall
+#   firewalld:
+#     port: 389/tcp
+#     permanent: yes
+#     state: enabled
 
-- name: Enable LDAP UDP through firewall
-  firewalld:
-    port: 389/udp
-    permanent: yes
-    state: enabled
+# - name: Enable LDAP UDP through firewall
+#   firewalld:
+#     port: 389/udp
+#     permanent: yes
+#     state: enabled
 
-- name: Enable SMB TCP through firewall
-  firewalld:
-    port: 445/tcp
-    permanent: yes
-    state: enabled
+# - name: Enable SMB TCP through firewall
+#   firewalld:
+#     port: 445/tcp
+#     permanent: yes
+#     state: enabled
 
-- name: Enable Kerberos kpasswd TCP through firewall
-  firewalld:
-    port: 464/tcp
-    permanent: yes
-    state: enabled
+# - name: Enable Kerberos kpasswd TCP through firewall
+#   firewalld:
+#     port: 464/tcp
+#     permanent: yes
+#     state: enabled
 
-- name: Enable Kerberos kpasswd UDP through firewall
-  firewalld:
-    port: 464/udp
-    permanent: yes
-    state: enabled
+# - name: Enable Kerberos kpasswd UDP through firewall
+#   firewalld:
+#     port: 464/udp
+#     permanent: yes
+#     state: enabled
 
-- name: Enable LDAPS TCP through firewall
-  firewalld:
-    port: 636/tcp
-    permanent: yes
-    state: enabled
+# - name: Enable LDAPS TCP through firewall
+#   firewalld:
+#     port: 636/tcp
+#     permanent: yes
+#     state: enabled
 
-- name: Enable Global Catalog TCP through firewall
-  firewalld:
-    port: 3268/tcp
-    permanent: yes
-    state: enabled
+# - name: Enable Global Catalog TCP through firewall
+#   firewalld:
+#     port: 3268/tcp
+#     permanent: yes
+#     state: enabled
 
-- name: Enable Global Catalog SSL TCP through firewall
-  firewalld:
-    port: 3269/tcp
-    permanent: yes
-    state: enabled
+# - name: Enable Global Catalog SSL TCP through firewall
+#   firewalld:
+#     port: 3269/tcp
+#     permanent: yes
+#     state: enabled
 
-- name: Enable Dynamic RPC Ports TCP through firewall
-  firewalld:
-    port: 49152-65535/tcp
-    permanent: yes
-    state: enabled
+# - name: Enable Dynamic RPC Ports TCP through firewall
+#   firewalld:
+#     port: 49152-65535/tcp
+#     permanent: yes
+#     state: enabled
 
-- name: Build AD
-  shell: |
-    /usr/local/samba/bin/samba-tool domain provision \
-      --use-rfc2307 \
-      --domain={{ domain_name }} \
-      --realm={{ realm }} \
-      --server-role=dc \
-      --dns-backend={{ dns_backend }} \
-      --adminpass={{ administrator_password }}
+# - name: Build AD
+#   shell: |
+#     /usr/local/samba/bin/samba-tool domain provision \
+#       --use-rfc2307 \
+#       --domain={{ domain_name }} \
+#       --realm={{ realm }} \
+#       --server-role=dc \
+#       --dns-backend={{ dns_backend }} \
+#       --adminpass={{ administrator_password }}
 
-- name: Replace Kerberos configuration
-  copy:
-    src: /usr/local/samba/private/krb5.conf
-    dest: /etc/krb5.conf
-    remote_src: yes
+# - name: Replace Kerberos configuration
+#   copy:
+#     src: /usr/local/samba/private/krb5.conf
+#     dest: /etc/krb5.conf
+#     remote_src: yes
 
-- name: Copy Samba DC systemd file
-  copy:
-    src: samba-ad-dc.service
-    dest: /etc/systemd/system/samba-ad-dc.service
-    owner: root
-    group: root
-    mode: '0644'
+# - name: Copy Samba DC systemd file
+#   copy:
+#     src: samba-ad-dc.service
+#     dest: /etc/systemd/system/samba-ad-dc.service
+#     owner: root
+#     group: root
+#     mode: '0644'
 
-- name: Force systemd to reread configs
-  systemd:
-    name: samba-ad-dc
-    daemon_reload: yes
-    state: restarted
+# - name: Force systemd to reread configs
+#   systemd:
+#     name: samba-ad-dc
+#     daemon_reload: yes
+#     state: restarted
 
-- name: Update /etc/resolv.conf
-  shell: |
-    echo "search {{ realm }}" > /etc/resolv.conf
-    echo "nameserver {{ ansible_facts['default_ipv4']['address'] }}" > /etc/resolv.conf
+# - name: Update /etc/resolv.conf
+#   shell: |
+#     echo "search {{ realm }}" > /etc/resolv.conf
+#     echo "nameserver {{ ansible_facts['default_ipv4']['address'] }}" > /etc/resolv.conf
