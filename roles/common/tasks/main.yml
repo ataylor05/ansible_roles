@@ -47,4 +47,4 @@
       - samba-common-tools
       - krb5-workstation
       - authselect-compat
-  when: join_domain == "yes"
+  when: join_domain|bool
