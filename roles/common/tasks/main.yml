@@ -1,6 +1,9 @@
 ---
-- name: Change root password
-  user: name=root update_password=always password={{root_pw}}
+– name: Set password to permanent password
+  expect:
+    command: passwd root
+    responses:
+      (?i)password: "{{ root_pw }}"
 
 - name: Patch OS
   dnf:
