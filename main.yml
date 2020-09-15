@@ -5,25 +5,24 @@
   roles:
     - role: common
       vars:
-        host_name: ad1
-        fqdn_hostname: ad1.anet.internal
-        selinux_state: disabled
+        host_name: srv1
+        fqdn_hostname: srv1.anet.internal
+        selinux_state: enabled
         root_pw: Passw@ord123!
+        join_domain: yes
+        domain_name: anet.internal
+        domain_join_user: administrator
+        domain_join_pw: Passw@ord123!
+        ad_dns_server: 192.168.4.2
 
     - role: NTP
       vars:
         ntp_network_access: 192.168.4.0/24
 
-    # - role: BIND
-    #   vars:
-    #     forward_zone_name: anet.local
-    #     reverse_zone_name: "1.168.192"
-    #     dns_sec: no
-
-    # - role: Samba-PDC
-    #   vars:
-    #     samba_version: "4.12.6"
-    #     domain_name: anet
-    #     realm: anet.internal
-    #     administrator_password: Passw@ord123!
-    #     dns_backend: SAMBA_INTERNAL
+    - role: Samba-PDC
+      vars:
+        samba_version: "4.12.6"
+        domain_name: anet
+        realm: anet.internal
+        administrator_password: Passw@ord123!
+        dns_backend: SAMBA_INTERNAL

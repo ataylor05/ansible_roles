@@ -84,4 +84,4 @@
       --realm=ANET.local \
       --server-role=dc \
       --dns-backend=BIND9_DLZ \
-      --adminpass=Passw@ord123!
+      --adminpass={{  }}
