@@ -1,8 +1,6 @@
 ---
-– name: Set password to permanent password
-  command: passwd root
-    responses:
-      (?i)password: "{{ root_pw }}"
+- name: Set root password
+  shell: echo {{  root_pw }} | passwd --stdin root
 
 - name: Patch OS
   dnf:
@@ -36,3 +34,17 @@
   selinux:
     policy: targeted
     state: "{{ selinux_state }}"
+
+- name: Install SSSD and dependencies
+  dnf:
+    name:
+      - realmd        
+      - sssd
+      - oddjob
+      - oddjob-mkhomedir
+      - adcli
+      - samba-common
+      - samba-common-tools
+      - krb5-workstation
+      - authselect-compat
+  when: join_domain == "yes"
