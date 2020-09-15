@@ -7,7 +7,7 @@
       vars:
         host_name: srv1
         fqdn_hostname: srv1.anet.internal
-        selinux_state: enabled
+        selinux_state: disabled
         root_pw: Passw@ord123!
         join_domain: yes
         domain_name: anet.internal
