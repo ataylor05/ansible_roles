@@ -1,7 +1,6 @@
 ---
 – name: Set password to permanent password
-  expect:
-    command: passwd root
+  command: passwd root
     responses:
       (?i)password: "{{ root_pw }}"
 
