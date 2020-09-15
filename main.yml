@@ -9,11 +9,7 @@
         fqdn_hostname: srv1.anet.internal
         selinux_state: disabled
         root_pw: Passw@ord123!
-        join_domain: yes
-        domain_name: anet.internal
-        domain_join_user: administrator
-        domain_join_pw: Passw@ord123!
-        ad_dns_server: 192.168.4.2
+        join_domain: no
 
     - role: NTP
       vars:
