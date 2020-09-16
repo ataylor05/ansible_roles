@@ -1,6 +1,4 @@
 ---
-
-
 - name: Remove krb5.conf
   file:
     path: /etc/krb5.conf
@@ -97,7 +95,7 @@
     state: stopped
     enabled: no
 
-- name: Update /etc/resolv.conf
-  shell: |
-    echo "search {{ realm }}" > /etc/resolv.conf
-    echo "nameserver {{ ansible_facts['default_ipv4']['address'] }}" > /etc/resolv.conf
+# - name: Update /etc/resolv.conf
+#   shell: |
+#     echo "search {{ realm }}" > /etc/resolv.conf
+#     echo "nameserver {{ ansible_facts['default_ipv4']['address'] }}" > /etc/resolv.conf
