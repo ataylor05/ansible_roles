@@ -1,1 +1,2 @@
+docker_version: docker-ce-18.09.0-3.el7
 user_added_to_docker_group: ansible

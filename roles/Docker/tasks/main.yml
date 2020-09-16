@@ -10,11 +10,7 @@
 
 - name: Install Docker
   shell: |
-    dnf -y install docker-ce docker-ce-cli containerd.io  --nobest
-
-- name: Exclude Docker from OS updates
-  shell: |
-    echo 'exclude=docker-ce docker-ce-cli containerd.io' >> /etc/dnf/dnf.conf
+    dnf -y install {{ docker_version }} docker-ce-cli containerd.io
 
 - name: Start and enable Docker
   systemd:
