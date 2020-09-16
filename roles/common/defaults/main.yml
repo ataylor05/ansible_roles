@@ -2,8 +2,3 @@ hostname: host
 fqdn_hostname: host.anet.internal
 selinux_state: enforcing
 root_pw: Passw@ord123!
-join_domain: yes
-domain_name: anet.internal
-domain_join_user: administrator
-domain_join_pw: Passw@ord123!
-ad_dns_server: 192.168.4.2
