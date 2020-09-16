@@ -5,8 +5,8 @@
   roles:
     - role: common
       vars:
-        host_name: srv1
-        fqdn_hostname: srv1.anet.internal
+        host_name: ad1
+        fqdn_hostname: ad1.anet.internal
         selinux_state: disabled
         root_pw: Passw@ord123!
         join_domain: no
@@ -15,10 +15,10 @@
       vars:
         ntp_network_access: 192.168.4.0/24
 
-    - role: Samba-PDC
-      vars:
-        samba_version: "4.12.6"
-        domain_name: anet
-        realm: anet.internal
-        administrator_password: Passw@ord123!
-        dns_backend: SAMBA_INTERNAL
+    # - role: Samba-PDC
+    #   vars:
+    #     samba_version: "4.12.6"
+    #     domain_name: anet
+    #     realm: anet.internal
+    #     administrator_password: Passw@ord123!
+    #     dns_backend: SAMBA_INTERNAL
