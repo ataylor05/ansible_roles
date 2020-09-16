@@ -65,8 +65,8 @@
     authselect select sssd with-mkhomedir
   when: join_domain|bool
 
-- name: Update /etc/resolv.conf
-  shell: |
-    echo "search {{ domain_name }}" > /etc/resolv.conf
-    echo "nameserver {{ ad_dns_server }}" >> /etc/resolv.conf
-  when: join_domain|bool
+# - name: Update /etc/resolv.conf
+#   shell: |
+#     echo "search {{ domain_name }}" > /etc/resolv.conf
+#     echo "nameserver {{ ad_dns_server }}" >> /etc/resolv.conf
+#   when: join_domain|bool
