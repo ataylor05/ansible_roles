@@ -5,8 +5,8 @@
   roles:
     - role: common
       vars:
-        host_name: srv1
-        fqdn_hostname: srv1.anet.internal
+        host_name: k8s-master
+        fqdn_hostname: k8s-master.anet.internal
         selinux_state: disabled
         root_pw: Passw@ord123!
 
@@ -23,11 +23,6 @@
         ad_linux_users_group_name: Linux_Admins
         ad_linux_admins_group_name: Linux_Users
 
-    - role: Consul-Leader
+    - role: Docker
       vars:
-        domain_name: anet.internal
-        domain_join_user: administrator
-        domain_join_pw: Passw@ord123!
-        ad_dns_server: 192.168.4.2
-        ad_linux_users_group_name: Linux_Admins
-        ad_linux_admins_group_name: Linux_Users
+        user_added_to_docker_group: ansible
