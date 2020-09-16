@@ -30,3 +30,8 @@
     echo {{ domain_join_pw }}| realm join {{ domain_name }} -U {{ domain_join_user }}
     authselect select sssd
     authselect select sssd with-mkhomedir
+
+- name: Configure AD access control
+  shell: |
+    realm permit -g {{ Linux_Users }} {{ Linux_Admins }}
+    echo '%{{ Linux_Admins }}@{{ domain_name }}     ALL=(ALL)    NOPASSWD:ALL' > /etc/sudoers.d/domain_admins
