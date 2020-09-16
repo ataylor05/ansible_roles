@@ -4,7 +4,7 @@
     name: yum-utils
     state: latest
 
-- name: Update /etc/resolv.conf
+- name: Add Docker repo
   shell: |
     yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 

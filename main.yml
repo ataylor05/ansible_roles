@@ -26,3 +26,7 @@
     - role: Docker
       vars:
         user_added_to_docker_group: ansible
+
+    - role: Kubernetes-Control-Plane
+      vars:
+        user_added_to_docker_group: ansible
