@@ -88,13 +88,6 @@
     group: root
     mode: '0644'
 
-- name: Force systemd to reread configs
-  systemd:
-    name: samba-ad-dc
-    daemon_reload: yes
-    state: stopped
-    enabled: no
-
 - name: Install Samaba DC
   shell: |
     samba-tool domain provision \
@@ -105,7 +98,14 @@
        --domain={{ domain_name }} \
        --adminpass={{ administrator_password }}
 
-# - name: Update /etc/resolv.conf
-#   shell: |
-#     echo "search {{ realm }}" > /etc/resolv.conf
-#     echo "nameserver {{ ansible_facts['default_ipv4']['address'] }}" > /etc/resolv.conf
+- name: Update /etc/resolv.conf
+  shell: |
+    echo "search {{ realm }}" > /etc/resolv.conf
+    echo "nameserver {{ ansible_facts['default_ipv4']['address'] }}" > /etc/resolv.conf
+
+- name: Force systemd to reread configs
+  systemd:
+    name: samba-ad-dc
+    daemon_reload: yes
+    state: started
+    enabled: yes
