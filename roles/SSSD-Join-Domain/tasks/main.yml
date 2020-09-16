@@ -35,3 +35,9 @@
   shell: |
     realm permit -g {{ Linux_Users }} {{ Linux_Admins }}
     echo '%{{ Linux_Admins }}@{{ domain_name }}     ALL=(ALL)    NOPASSWD:ALL' > /etc/sudoers.d/domain_admins
+
+- name: Restart SSSD
+  systemd:
+    name: sssd
+    state: restarted
+    enabled: yes
