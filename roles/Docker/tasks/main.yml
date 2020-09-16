@@ -13,6 +13,14 @@
     dnf -y install docker-ce docker-ce-cli containerd.io  --nobest
   ignore_errors: yes
 
+- name: Copy DNF config
+  copy:
+    src: dnf.conf
+    dest: /etc/dnf/dnf.conf
+    owner: root
+    group: root
+    mode: '0644'
+
 - name: Start and enable Docker
   systemd:
     name: docker
