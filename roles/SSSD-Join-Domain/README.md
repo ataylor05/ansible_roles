@@ -1,3 +1,9 @@
+# Sambda Active Directory primary domain controller
+This playbook adds a Linux host to an Active Directory domain and configures AD access control for the host.
+
+## Example 
+Here is an example of the main.yml file to deploy this playbook.<br>
+<pre>
 ---
 - hosts: localhost
   gather_facts: True
@@ -22,12 +28,6 @@
         ad_dns_server: 192.168.4.2
         ad_linux_users_group_name: Linux_Admins
         ad_linux_admins_group_name: Linux_Users
-
-    - role: Consul-Leader
-      vars:
-        domain_name: anet.internal
-        domain_join_user: administrator
-        domain_join_pw: Passw@ord123!
-        ad_dns_server: 192.168.4.2
-        ad_linux_users_group_name: Linux_Admins
-        ad_linux_admins_group_name: Linux_Users
+</pre>
+<br><br>
+**ansible-playbook main.yml**

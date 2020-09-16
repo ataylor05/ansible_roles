@@ -1,4 +1,18 @@
 ---
+- name: Disabling DNS processing in the NetworkManager configuration
+  shell: |
+    echo '[main]' > /etc/NetworkManager/conf.d/90-dns-none.conf
+    echo 'dns=none' >> /etc/NetworkManager/conf.d/90-dns-none.conf
+    systemctl reload NetworkManager
+  args:
+    warn: false
+
+- name: Update /etc/resolv.conf
+  shell: |
+    echo "search {{ domain_name }}" > /etc/resolv.conf
+    echo "nameserver {{ ansible_facts['default_ipv4']['address'] }}" > /etc/resolv.conf
+
+
 - name: Install extra repos
   dnf:
     name:
