@@ -6,11 +6,11 @@
 
 - name: Update /etc/resolv.conf
   shell: |
-    dnf-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo --nobest
+    yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 
 - name: Install Docker
   shell: |
-    dnf -y install docker-ce docker-ce-cli containerd.io
+    dnf -y install docker-ce docker-ce-cli containerd.io  --nobest
 
 - name: Start and enable Docker
   systemd:
