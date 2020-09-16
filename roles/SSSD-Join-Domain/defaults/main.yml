@@ -1,0 +1,4 @@
+domain_name: anet.internal
+domain_join_user: administrator
+domain_join_pw: Passw@ord123!
+ad_dns_server: 192.168.4.2

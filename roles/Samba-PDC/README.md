@@ -1,5 +1,5 @@
 # Sambda Active Directory primary domain controller
-This playbook provisions a Samaba Active Directory domain controller.  BIND is used on the local domain controller(s) instead of the built-in Samba DNS.  Also Samaba is complied from source instead of using a prebuilt binary.  This was done for the inclusion of the samaba-tool program which provisions Active Directory.
+This playbook provisions a Samaba Active Directory domain controller.  Samaba is complied from source instead of using a prebuilt binary.  This was done for the inclusion of the samaba-tool program which provisions Active Directory.
 
 ## Example 
 Here is an example of the main.yml file to deploy this playbook.<br>
@@ -11,21 +11,22 @@ Here is an example of the main.yml file to deploy this playbook.<br>
   roles:
     - role: common
       vars:
-        hostname: ad1
+        host_name: ad1
         fqdn_hostname: ad1.anet.internal
         selinux_state: disabled
-        
-    - role: BIND
+        root_pw: Passw@ord123!
+
+    - role: NTP
       vars:
-        forward_zone_name: anet.local
-        reverse_zone_name: "1.168.192"
-        dns_sec: no
+        ntp_network_access: 192.168.4.0/24
 
     - role: Samba-PDC
       vars:
-        domain_name: ANET
-        realm: ANET.local
+        samba_version: "4.12.6"
+        domain_name: anet
+        realm: anet.internal
         administrator_password: Passw@ord123!
+        dns_backend: SAMBA_INTERNAL
 </pre>
 <br><br>
 **ansible-playbook main.yml**
