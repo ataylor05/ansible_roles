@@ -20,13 +20,13 @@
       - krb5-workstation
       - authselect-compat
 
+- name: Update /etc/resolv.conf
+  shell: |
+    echo "search {{ domain_name }}" > /etc/resolv.conf
+    echo "nameserver {{ ad_dns_server }}" >> /etc/resolv.conf
+
 - name: Join domain
   shell: |
     echo {{ domain_join_pw }}| realm join {{ domain_name }} -U {{ domain_join_user }}
     authselect select sssd
     authselect select sssd with-mkhomedir
-
-- name: Update /etc/resolv.conf
-  shell: |
-    echo "search {{ domain_name }}" > /etc/resolv.conf
-    echo "nameserver {{ ad_dns_server }}" >> /etc/resolv.conf

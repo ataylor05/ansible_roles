@@ -5,8 +5,8 @@
   roles:
     - role: common
       vars:
-        host_name: ad1
-        fqdn_hostname: ad1.anet.internal
+        host_name: srv1
+        fqdn_hostname: srv1.anet.internal
         selinux_state: disabled
         root_pw: Passw@ord123!
 
