@@ -95,6 +95,16 @@
     state: stopped
     enabled: no
 
+- name: Install Samaba DC
+  shell: |
+    samba-tool domain provision \
+       --server-role=dc \
+       --use-rfc2307 \
+       --dns-backend={{ dns_backend }} \
+       --realm={{ realm }} \
+       --domain={{ domain_name }} \
+       --adminpass={{ administrator_password }}
+
 # - name: Update /etc/resolv.conf
 #   shell: |
 #     echo "search {{ realm }}" > /etc/resolv.conf
