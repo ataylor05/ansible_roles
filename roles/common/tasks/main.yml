@@ -23,6 +23,15 @@
   hostname:
     name: "{{ fqdn_hostname }}"
 
+- name: Disabling DNS processing in the NetworkManager configuration
+  shell: |
+    echo '[main]' > /etc/NetworkManager/conf.d/90-dns-none.conf
+    echo 'dns=none' >> /etc/NetworkManager/conf.d/90-dns-none.conf
+    systemctl reload NetworkManager
+  args:
+    warn: false
+  when: join_domain|bool
+
 - name: Configure /etc/hosts
   shell: |
     echo "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4" > /etc/hosts
@@ -49,15 +58,6 @@
       - authselect-compat
   when: join_domain|bool
 
-- name: Disabling DNS processing in the NetworkManager configuration
-  shell: |
-    echo '[main]' > /etc/NetworkManager/conf.d/90-dns-none.conf
-    echo 'dns=none' >> /etc/NetworkManager/conf.d/90-dns-none.conf
-    systemctl reload NetworkManager
-  args:
-    warn: false
-  when: join_domain|bool
-
 - name: Join domain
   shell: |
     echo {{ domain_join_pw }}| realm join {{ domain_name }} -U {{ domain_join_user }}
@@ -65,8 +65,8 @@
     authselect select sssd with-mkhomedir
   when: join_domain|bool
 
-# - name: Update /etc/resolv.conf
-#   shell: |
-#     echo "search {{ domain_name }}" > /etc/resolv.conf
-#     echo "nameserver {{ ad_dns_server }}" >> /etc/resolv.conf
-#   when: join_domain|bool
+- name: Update /etc/resolv.conf
+  shell: |
+    echo "search {{ domain_name }}" > /etc/resolv.conf
+    echo "nameserver {{ ad_dns_server }}" >> /etc/resolv.conf
+  when: join_domain|bool
