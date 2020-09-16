@@ -56,9 +56,13 @@
     name: kubeadm
     state: latest
 
-- name: Exclude Docker from OS updates
-  shell: |
-    echo 'exclude=kubeadm kubectl kubelet' >> /etc/dnf/dnf.conf
+- name: Copy DNF config
+  copy:
+    src: dnf.conf
+    dest: /etc/dnf/dnf.conf
+    owner: root
+    group: root
+    mode: '0644'
 
 - name: Start and enable kubelet
   systemd:
