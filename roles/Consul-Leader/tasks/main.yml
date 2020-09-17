@@ -24,6 +24,10 @@
     tls cert create -server -dc {{ datacenter_name }}
     consul tls cert create -client -dc {{ datacenter_name }}
 
+- name: Add consul path to sudoers file
+  shell: |
+    echo 'Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin' >> /etc/sudoers
+
 - name: Copy consul.hcl
   template:
     src: consul.hcl.j2
