@@ -79,6 +79,6 @@
 
 - name: Install Weavenet CNI
   become: yes
-  become_user: {{  k8s_admin_user }}
+  become_user: "{{  k8s_admin_user }}"
   shell: |
     kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
