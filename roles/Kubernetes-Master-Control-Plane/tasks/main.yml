@@ -76,3 +76,8 @@
     mkdir -p /home/{{  k8s_admin_user }}/.kube
     cp -i /etc/kubernetes/admin.conf /home/{{  k8s_admin_user }}/.kube/config
     chown {{  k8s_admin_user }}:{{  k8s_admin_user }} /home/{{  k8s_admin_user }}/.kube/config
+
+- name: Init a cluster
+  shell: |
+    sleep 120
+    kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
