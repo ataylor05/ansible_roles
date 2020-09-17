@@ -1,0 +1,28 @@
+---
+- hosts: localhost
+  gather_facts: True
+  become: True
+  roles:
+    - role: common
+      vars:
+        host_name: consul-1
+        fqdn_hostname: consul-1.anet.internal
+        selinux_state: disabled
+        root_pw: Passw@ord123!
+
+    - role: NTP
+      vars:
+        ntp_network_access: 192.168.4.0/24
+
+    - role: SSSD-Join-Domain
+      vars:
+        domain_name: anet.internal
+        domain_join_user: administrator
+        domain_join_pw: Passw@ord123!
+        ad_dns_server: 192.168.4.2
+        ad_linux_users_group_name: Linux_Admins
+        ad_linux_admins_group_name: Linux_Users
+
+    - role: Consul-Leader
+      vars:
+        consul_version: "1.8.3"

@@ -5,3 +5,13 @@
     dest: /usr/local/bin
     remote_src: yes
 
+- name: Ensure group consul exists
+  group:
+    name: consul
+    state: present
+
+- name: Add the user consul and append to group consul
+  user:
+    name: consul
+    group: consul
+    append: yes
