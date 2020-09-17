@@ -29,4 +29,5 @@
 
     - role: Kubernetes-Control-Plane
       vars:
-        user_added_to_docker_group: ansible
+        k8s_admin_user: ansible
+        k8s_init_output_file: /root/k8s-init

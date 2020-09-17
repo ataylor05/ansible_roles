@@ -69,3 +69,10 @@
     name: kubelet
     enabled: yes
     state: started
+
+- name: Init a cluster
+  shell: |
+    kubeadm init > {{ k8s_init_output_file }}
+    mkdir -p /home/{{  k8s_admin_user }}/.kube
+    cp -i /etc/kubernetes/admin.conf /home/{{  k8s_admin_user }}/.kube/config
+    chown {{  k8s_admin_user }}:{{  k8s_admin_user }} /home/{{  k8s_admin_user }}/.kube/config
