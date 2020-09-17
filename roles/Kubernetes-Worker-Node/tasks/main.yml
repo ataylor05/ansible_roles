@@ -1,34 +1,4 @@
 ---
-- name: Allow K8S API server
-  firewalld:
-    port: 6443/tcp
-    permanent: yes
-    state: enabled
-
-- name: Allow ETCD
-  firewalld:
-    port: 2379-2380/tcp
-    permanent: yes
-    state: enabled
-
-- name: Allow Kubelet API
-  firewalld:
-    port: 10250/tcp
-    permanent: yes
-    state: enabled
-
-- name: Allow kube-scheduler
-  firewalld:
-    port: 10251/tcp
-    permanent: yes
-    state: enabled
-
-- name: Allow kube-controller-manager
-  firewalld:
-    port: 10252/tcp
-    permanent: yes
-    state: enabled
-
 - name: Configure IP forwarding
   shell: |
     modprobe br_netfilter
@@ -64,15 +34,27 @@
     group: root
     mode: '0644'
 
+- name: Allow Kubelet API
+  firewalld:
+    port: 10250/tcp
+    permanent: yes
+    state: enabled
+
+- name: Allow NodePort service
+  firewalld:
+    port: 30000-32767/tcp
+    permanent: yes
+    state: enabled
+
 - name: Start and enable kubelet
   systemd:
     name: kubelet
     enabled: yes
     state: started
 
-- name: Init a cluster
+- name: Join worker to cluster
   shell: |
-    kubeadm init > {{ k8s_init_output_file }}
-    mkdir -p /home/{{  k8s_admin_user }}/.kube
-    cp -i /etc/kubernetes/admin.conf /home/{{  k8s_admin_user }}/.kube/config
-    chown {{  k8s_admin_user }}:{{  k8s_admin_user }} /home/{{  k8s_admin_user }}/.kube/config
+    kubeadm join {{ master_server }} \
+       --token {{ cluster_token }}  \
+       --discovery-token-ca-cert-hash {{ discovery_token_ca_cert_hash }}
+    kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"

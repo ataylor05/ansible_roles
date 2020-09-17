@@ -1,0 +1,3 @@
+master_server: 192.168.4.10:6443
+cluster_token: s0mxuf.eo4km5jmmy7roypk
+discovery_token_ca_cert_hash: sha256:ada73b718f55a5e9106f9c69e820168333c9870c5e398d1fb13cbb4a23f29d70

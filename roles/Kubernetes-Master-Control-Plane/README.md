@@ -1,3 +1,9 @@
+# Sambda Active Directory primary domain controller
+This playbook install Kubernetes and configures the host to be the first server of the K8S control plane.
+
+## Example 
+Here is an example of the main.yml file to deploy this playbook.<br>
+<pre>
 ---
 - hosts: localhost
   gather_facts: True
@@ -5,8 +11,8 @@
   roles:
     - role: common
       vars:
-        host_name: k8s-node1
-        fqdn_hostname: k8s-node1.anet.internal
+        host_name: k8s-master
+        fqdn_hostname: k8s-master.anet.internal
         selinux_state: disabled
         root_pw: Passw@ord123!
 
@@ -27,8 +33,10 @@
       vars:
         user_added_to_docker_group: ansible
 
-    - role: Kubernetes-Worker-Node
+    - role: Kubernetes-Master-Control-Plane
       vars:
-        master_server: 192.168.4.10:6443
-        cluster_token: s0mxuf.eo4km5jmmy7roypk
-        discovery_token_ca_cert_hash: sha256:ada73b718f55a5e9106f9c69e820168333c9870c5e398d1fb13cbb4a23f29d70
+        k8s_admin_user: ansible
+        k8s_init_output_file: /root/k8s-init
+</pre>
+<br><br>
+**ansible-playbook main.yml**
