@@ -26,3 +26,7 @@
     - role: Consul-Leader
       vars:
         consul_version: "1.8.3"
+        gossip_encryption_key: b8QnDrMHJEwtayuEcd9M0PS3eHan46OFp++/YWO3S4I=
+        datacenter_name: dc1
+        retry_join_address: {{ ansible_facts['default_ipv4']['address'] }}
+        enable_ui: true
