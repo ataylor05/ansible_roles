@@ -4,6 +4,7 @@
     src: https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_linux_amd64.zip
     dest: /usr/local/bin
     remote_src: yes
+    mode: '0777'
 
 - name: Add consul path to sudoers file
   shell: |
