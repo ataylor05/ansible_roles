@@ -58,9 +58,7 @@
     
 - name: Copy certificates from leader
   shell: |
-    sshpass -p '{{ leader_ssh_password }}' scp {{ leader_ssh_user }}@{{ leader_join_address }}:/etc/consul-certs/consul-agent-ca.pem /etc/consul-certs/consul-agent-ca.pem
-    sshpass -p '{{ leader_ssh_password }}' scp {{ leader_ssh_user }}@{{ leader_join_address }}:/etc/consul-certs/{{ datacenter_name }}-server-consul-0.pem /etc/consul-certs/{{ datacenter_name }}-server-consul-0.pem
-    sshpass -p '{{ leader_ssh_password }}' scp {{ leader_ssh_user }}@{{ leader_join_address }}:/etc/consul-certs/{{ datacenter_name }}-server-consul-0-key.pem /etc/consul-certs/{{ datacenter_name }}-server-consul-0-key.pem
+    sshpass -p '{{ leader_ssh_password }}' scp -o StrictHostKeyChecking=no {{ leader_ssh_user }}@{{ leader_join_address }}:/etc/consul-certs/*.pem /etc/consul-certs
 
 
 - name: Copy consul.hcl
