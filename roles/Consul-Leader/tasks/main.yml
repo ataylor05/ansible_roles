@@ -46,6 +46,15 @@
     group: consul
     mode: '0640'
 
+- name: Recursively change ownership of /opt/consul
+  file:
+    path: /opt/consul
+    state: directory
+    recurse: yes
+    owner: consul
+    group: consul
+
+
 - name: Recursively change ownership of /etc/consul.d
   file:
     path: /etc/consul.d
