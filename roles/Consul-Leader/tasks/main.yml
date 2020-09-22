@@ -24,7 +24,8 @@
 - name: Create the Certificate Authority and client/server certs
   shell: |
     mkdir /etc/consul.d || echo "alreday exists"
-    cd /root/
+    mkdir /etc/consul-certs || echo "alreday exists"
+    cd /etc/consul-certs
     consul tls ca create
     consul tls cert create -server -dc {{ datacenter_name }}
     consul tls cert create -client -dc {{ datacenter_name }}
