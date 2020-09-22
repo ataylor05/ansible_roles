@@ -25,7 +25,8 @@
   file:
     path: /etc/consul-certs
     state: directory
-    name: consul
+    mode: '0755'
+    owner: consul
     group: consul
 
 - name: Create /etc/consul.d directory if it does not exist
@@ -33,7 +34,7 @@
     path: /etc/consul.d
     state: directory
     mode: '0755'
-    name: consul
+    owner: consul
     group: consul
 
 - name: Create /opt/consul directory if it does not exist
@@ -41,7 +42,7 @@
     path: /opt/consul
     state: directory
     mode: '0755'
-    name: consul
+    owner: consul
     group: consul
 
 - name: Build sshpass
