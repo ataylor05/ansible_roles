@@ -46,6 +46,22 @@
     group: consul
     mode: '0640'
 
+- name: Recursively change ownership of /etc/consul.d
+  file:
+    path: /etc/consul.d
+    state: directory
+    recurse: yes
+    owner: consul
+    group: consul
+
+- name: Recursively change ownership of /etc/consul-certs
+  file:
+    path: /etc/consul-certs
+    state: directory
+    recurse: yes
+    owner: consul
+    group: consul
+
 - name: Copy Consul systemd file
   copy:
     src: consul.service
