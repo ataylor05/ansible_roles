@@ -1,0 +1,119 @@
+---
+- name: Unarchive Consul binary
+  unarchive:
+    src: https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_linux_amd64.zip
+    dest: /usr/local/bin
+    remote_src: yes
+    mode: '0777'
+
+- name: Add consul path to sudoers file
+  shell: |
+    echo 'Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin' >> /etc/sudoers
+
+- name: Ensure group consul exists
+  group:
+    name: consul
+    state: present
+
+- name: Add the user consul and append to group consul
+  user:
+    name: consul
+    group: consul
+    append: yes
+
+- name: Create /etc/consul-certs directory if it does not exist
+  file:
+    path: /etc/consul-certs
+    state: directory
+    mode: '0755'
+    name: consul
+    group: consul
+
+- name: Create /etc/consul.d directory if it does not exist
+  file:
+    path: /etc/consul.d
+    state: directory
+    mode: '0755'
+    name: consul
+    group: consul
+
+- name: Create /opt/consul directory if it does not exist
+  file:
+    path: /opt/consul
+    state: directory
+    mode: '0755'
+    name: consul
+    group: consul
+
+- name: Copy certificates from leader
+  shell: |
+    dnf -y group install "Development Tools"
+    cd /tmp
+    wget -O sshpass-1.06.tar.gz https://sourceforge.net/projects/sshpass/files/latest/download
+    tar -xzvf sshpass-1.06.tar.gz
+    cd sshpass-1.06
+    ./configure
+    make
+    make install
+    sshpass -p '{{ leader_ssh_password }}' scp {{ leader_ssh_user }}@{{ leader_join_address }}:/etc/consul-certs/consul-agent-ca.pem /etc/consul-certs/consul-agent-ca.pem
+    sshpass -p '{{ leader_ssh_password }}' scp {{ leader_ssh_user }}@{{ leader_join_address }}:/etc/consul-certs/{{ datacenter_name }}-server-consul-0.pem /etc/consul-certs/{{ datacenter_name }}-server-consul-0.pem
+    sshpass -p '{{ leader_ssh_password }}' scp {{ leader_ssh_user }}@{{ leader_join_address }}:/etc/consul-certs/{{ datacenter_name }}-server-consul-0-key.pem /etc/consul-certs/{{ datacenter_name }}-server-consul-0-key.pem
+
+- name: Copy consul.hcl
+  template:
+    src: consul.hcl.j2
+    dest: /etc/consul.d/consul.hcl
+    owner: consul
+    group: consul
+    mode: '0640'
+
+- name: Copy server.hcl
+  template:
+    src: server.hcl.j2
+    dest: /etc/consul.d/server.hcl
+    owner: consul
+    group: consul
+    mode: '0640'
+
+- name: Recursively change ownership of /opt/consul
+  file:
+    path: /opt/consul
+    state: directory
+    recurse: yes
+    owner: consul
+    group: consul
+
+
+- name: Recursively change ownership of /etc/consul.d
+  file:
+    path: /etc/consul.d
+    state: directory
+    recurse: yes
+    owner: consul
+    group: consul
+
+- name: Recursively change ownership of /etc/consul-certs
+  file:
+    path: /etc/consul-certs
+    state: directory
+    recurse: yes
+    owner: consul
+    group: consul
+
+- name: Copy Consul systemd file
+  copy:
+    src: consul.service
+    dest: /usr/lib/systemd/system/consul.service
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: SystemD daemon reload
+  systemd:
+    daemon_reload: yes
+
+- name: Start and enable Consul
+  systemd:
+    state: started
+    name: consul
+    enabled: yes
