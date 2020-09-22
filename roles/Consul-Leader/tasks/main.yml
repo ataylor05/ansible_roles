@@ -26,7 +26,7 @@
     mkdir /etc/consul.d || echo "alreday exists"
     cd /etc/consul.d/
     consul tls ca create
-    tls cert create -server -dc {{ datacenter_name }}
+    consul tls cert create -server -dc {{ datacenter_name }}
     consul tls cert create -client -dc {{ datacenter_name }}
 
 - name: Copy consul.hcl
