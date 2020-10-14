@@ -72,7 +72,7 @@
 
 - name: Init a cluster
   shell: |
-    kubeadm init --cluster-cidr=10.244.0.0/16 --allocate-node-cidrs=true > {{ k8s_init_output_file }}
+    kubeadm init --allocate-node-cidrs=true > {{ k8s_init_output_file }}
     mkdir -p /home/{{  k8s_admin_user }}/.kube
     cp -i /etc/kubernetes/admin.conf /home/{{  k8s_admin_user }}/.kube/config
     chown {{  k8s_admin_user }}:{{  k8s_admin_user }} /home/{{  k8s_admin_user }}/.kube/config
