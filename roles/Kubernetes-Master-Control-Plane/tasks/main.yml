@@ -1,4 +1,10 @@
 ---
+- name: Allow BGP
+  firewalld:
+    port: 179/tcp
+    permanent: yes
+    state: enabled
+    
 - name: Allow K8S API server
   firewalld:
     port: 6443/tcp
