@@ -34,6 +34,12 @@
     group: root
     mode: '0644'
 
+- name: Allow BGP
+  firewalld:
+    port: 179/tcp
+    permanent: yes
+    state: enabled
+
 - name: Allow Kubelet API
   firewalld:
     port: 10250/tcp
