@@ -76,3 +76,9 @@
     mkdir -p /home/{{  k8s_admin_user }}/.kube
     cp -i /etc/kubernetes/admin.conf /home/{{  k8s_admin_user }}/.kube/config
     chown {{  k8s_admin_user }}:{{  k8s_admin_user }} /home/{{  k8s_admin_user }}/.kube/config
+    
+- name: Configure network CNI
+  shell: |
+    su ansible
+    sleep 180
+    kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
