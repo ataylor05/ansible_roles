@@ -1,6 +1,10 @@
 # Sambda Active Directory primary domain controller
 This playbook install Kubernetes and configures the host to be the first server of the K8S control plane.
 
+- name: Install Flannel and Calico
+  shell: |
+    kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+
 ## Example 
 Here is an example of the main.yml file to deploy this playbook.<br>
 <pre>
