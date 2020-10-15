@@ -79,5 +79,5 @@
 
 - name: Install Flannel and Calico
   shell: |
-    sleep 300
+    sleep 600
     kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
