@@ -79,6 +79,6 @@
     
 - name: Configure network CNI
   shell: |
-    su ansible
+    export KUBECONFIG=/etc/kubernetes/admin.conf
     sleep 180
     kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
