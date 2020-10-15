@@ -58,5 +58,6 @@
        --token {{ cluster_token }}  \
        --discovery-token-ca-cert-hash {{ discovery_token_ca_cert_hash }}
        
-- name: Reboot the machine
-  reboot:
+- name: Reboot the server
+  shell: |
+    reboot
