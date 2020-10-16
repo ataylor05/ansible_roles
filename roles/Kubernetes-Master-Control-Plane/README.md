@@ -1,12 +1,8 @@
-# Sambda Active Directory primary domain controller
-This playbook install Kubernetes and configures the host to be the first server of the K8S control plane.
-
-- name: Install Flannel and Calico
-  shell: |
-    kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+# Kubernetes Master server for control plane
+This playbook install a master Kubernetes server along with the flannel CNI network plugin.  After cluster initialization, the join token output will be saved to a file at /root/k8s-init.  Refer to this file for joining worker nodes.
 
 ## Example 
-Here is an example of the main.yml file to deploy this playbook.<br>
+Here is an example of the k8s-master.yaml file to deploy this playbook.<br>
 <pre>
 ---
 - hosts: localhost
@@ -43,4 +39,4 @@ Here is an example of the main.yml file to deploy this playbook.<br>
         k8s_init_output_file: /root/k8s-init
 </pre>
 <br><br>
-**ansible-playbook main.yml**
+**ansible-playbook k8s-master.yaml**
