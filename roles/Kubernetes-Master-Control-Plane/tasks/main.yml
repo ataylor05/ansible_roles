@@ -34,6 +34,12 @@
     port: 10252/tcp
     permanent: yes
     state: enabled
+    
+- name: Allow DNS
+  firewalld:
+    service: dns
+    permanent: yes
+    state: enabled
 
 - name: Configure IP forwarding
   shell: |
