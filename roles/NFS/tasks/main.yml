@@ -34,7 +34,11 @@
     permanent: yes
     state: enabled
 
-- name: Restart NFS
-  systemd:
-    name: nfs-server
-    state: restarted
+- name: Update exports
+  template:
+    src: templates/exports.j2
+    dest: /etc/exports
+
+- name: Export paths
+  shell: |
+    exportfs -arv
