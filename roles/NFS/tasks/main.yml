@@ -1,0 +1,40 @@
+---
+- name: Install NFS
+  dnf:
+    name: nfs-utils
+    state: latest
+
+- name: Start and enable NFS service
+  systemd:
+    name: nfs-server
+    enabled: yes
+    state: restarted
+
+- name: Create a NFS directory
+  file:
+    path: {{ nfs_dir }}
+    state: directory
+    mode: '0755'
+
+- name: Allow NFS ports through firewall
+  firewalld:
+    service: nfs
+    permanent: yes
+    state: enabled
+
+- name: Allow rpc-bind ports through firewall
+  firewalld:
+    service: rpc-bind
+    permanent: yes
+    state: enabled
+
+- name: Allow mountd ports through firewall
+  firewalld:
+    service: mountd
+    permanent: yes
+    state: enabled
+
+- name: Restart NFS
+  systemd:
+    name: nfs-server
+    state: restarted

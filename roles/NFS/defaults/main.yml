@@ -1,0 +1,2 @@
+nfs_dir: /mnt/nfs
+nfs_network_access: 0.0.0.0/24

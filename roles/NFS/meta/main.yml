@@ -1,0 +1,7 @@
+galaxy_info:
+  role_name: NFS
+  author: Allan Taylor
+  description: A network file system server role.
+  company: ANET
+  license: GPLv3
+  min_ansible_version: 1.2
