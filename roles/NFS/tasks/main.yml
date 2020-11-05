@@ -12,7 +12,7 @@
 
 - name: Create a NFS directory
   file:
-    path: {{ nfs_dir }}
+    path: "{{ nfs_dir }}"
     state: directory
     mode: '0755'
 
